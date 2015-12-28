@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #IBOS
-wget http://www.ibos.com.cn/download/ibos_install_sh.zip
-rm -rf ibos_install_sh
-unzip ibos_install_sh.zip
-chmod -R 777 ./ibos_install_sh/
-cd ./ibos_install_sh/
+wget https://github.com/SeekArt/ibos-linux-install/archive/master.zip
+rm -rf ibos-linux-install-master
+unzip ibos-linux-install-master.zip
+chmod -R 777 ./ibos-linux-install-master/
+cd ./ibos-linux-install-master/ibos_install_sh/
 ./install.sh
