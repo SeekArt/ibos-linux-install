@@ -1,12 +1,24 @@
 #!/bin/bash
 
+#ifcentos=$(cat /proc/version | grep centos)
+ifubuntu=$(cat /proc/version | grep ubuntu)
 userdel www
 groupadd www
+if [ "$ifubuntu" != "" ];then
+useradd -g www -M -d /ibos/www -s /usr/sbin/nologin www &> /dev/null
+else
 useradd -g www -M -d /ibos/www -s /sbin/nologin www &> /dev/null
+fi
 
+#if [ "$ifcentos" != "" ];then
+#useradd -g www -M -d /ibos/www -s /sbin/nologin www &> /dev/null
+#elif [ "$ifubuntu" != "" ];then
+#useradd -g www -M -d /ibos/www -s /usr/sbin/nologin www &> /dev/null
+#fi
 mkdir -p /ibos
 mkdir -p /ibos/server
 mkdir -p /ibos/www
+mkdir -p /ibos/www/phpwind
 mkdir -p /ibos/log
 mkdir -p /ibos/log/php
 mkdir -p /ibos/log/mysql

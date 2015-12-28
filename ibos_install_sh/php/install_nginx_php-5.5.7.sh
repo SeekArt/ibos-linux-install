@@ -1,11 +1,12 @@
 #!/bin/bash
-rm -rf php-5.3.18
-if [ ! -f php-5.3.18.tar.gz ];then
-  wget  http://oss.aliyuncs.com/aliyunecs/onekey/php/php-5.3.18.tar.gz
+rm -rf php-5.5.7
+if [ ! -f php-5.5.7.tar.gz ];then
+  wget http://oss.aliyuncs.com/aliyunecs/onekey/php/php-5.5.7.tar.gz
 fi
-tar zxvf php-5.3.18.tar.gz
-cd php-5.3.18
+tar zxvf php-5.5.7.tar.gz
+cd php-5.5.7
 ./configure --prefix=/ibos/server/php \
+--enable-opcache \
 --with-config-file-path=/ibos/server/php/etc \
 --with-mysql=mysqlnd \
 --with-mysqli=mysqlnd \
@@ -13,8 +14,6 @@ cd php-5.3.18
 --enable-fpm \
 --enable-fastcgi \
 --enable-static \
---enable-maintainer-zts \
---enable-zend-multibyte \
 --enable-inline-optimization \
 --enable-sockets \
 --enable-wddx \
@@ -49,9 +48,10 @@ else
 fi
 make install
 cd ..
-cp ./php-5.3.18/php.ini-production /ibos/server/php/etc/php.ini
+cp ./php-5.5.7/php.ini-production /ibos/server/php/etc/php.ini
 #adjust php.ini
-sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20090626/"#'  /ibos/server/php/etc/php.ini
+sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20121212/"#'  /ibos/server/php/etc/php.ini
+sed -i 's#extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20121212/"#'  /ibos/server/php/etc/php.ini
 sed -i 's/post_max_size = 8M/post_max_size = 64M/g' /ibos/server/php/etc/php.ini
 sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 64M/g' /ibos/server/php/etc/php.ini
 sed -i 's/;date.timezone =/date.timezone = PRC/g' /ibos/server/php/etc/php.ini
@@ -69,6 +69,6 @@ sed -i 's,;pid = run/php-fpm.pid,pid = run/php-fpm.pid,g'   /ibos/server/php/etc
 sed -i 's,;error_log = log/php-fpm.log,error_log = /ibos/log/php/php-fpm.log,g'   /ibos/server/php/etc/php-fpm.conf
 sed -i 's,;slowlog = log/$pool.log.slow,slowlog = /ibos/log/php/\$pool.log.slow,g'   /ibos/server/php/etc/php-fpm.conf
 #self start
-install -v -m755 ./php-5.3.18/sapi/fpm/init.d.php-fpm  /etc/init.d/php-fpm
+install -v -m755 ./php-5.5.7/sapi/fpm/init.d.php-fpm  /etc/init.d/php-fpm
 /etc/init.d/php-fpm start
 sleep 5

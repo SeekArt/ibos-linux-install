@@ -8,6 +8,7 @@ fi
 ifrpm=$(cat /proc/version | grep -E "redhat|centos")
 ifdpkg=$(cat /proc/version | grep -Ei "ubuntu|debian")
 ifcentos=$(cat /proc/version | grep centos)
+ifubuntu=$(cat /proc/version | grep ubuntu)
 
 if [ "$ifrpm" != "" ];then
 	yum -y install vsftpd
@@ -27,6 +28,10 @@ if [ "$ifcentos" != "" ] && [ "$machine" == "i686" ];then
 	\cp -f ./ftp/config-ftp/vsftpdcentosi686.conf /etc/vsftpd/vsftpd.conf
 fi
 
+if [ "$ifubuntu" != "" ];then
+    mv /etc/pam.d/vsftpd /etc/pam.d/vsftpd.bak
+	ln -s /lib/init/upstart-job  /etc/init.d/vsftpd
+fi
 /etc/init.d/vsftpd start
 
 chown -R www:www /ibos/www

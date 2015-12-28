@@ -1,13 +1,13 @@
 #!/bin/bash
 
 ####---- global variables ----begin####
-export nginx_version=1.0.15
-export httpd_version=2.2.22
+export nginx_version=1.4.4
+export httpd_version=2.2.29
 export mysql_version=5.1.73
-export php_version=5.3.18
+export php_version=5.3.29
 
 export ibos_version=3.3
-export phpmyadmin_version=4.1.8
+
 export vsftpd_version=2.3.2
 export sphinx_version=0.9.9
 export install_ftp_version=0.0.0
@@ -19,10 +19,44 @@ install_log=/ibos/website-info.log
 
 
 ####---- version selection ----begin####
+tmp=1
+read -p "Please select the web of nginx/apache, input 1 or 2 : " tmp
+if [ "$tmp" == "1" ];then
+  web=nginx
+elif [ "$tmp" == "2" ];then
+  web=apache
+fi
 
+tmp=1
+if echo $web |grep "nginx" > /dev/null;then
   nginx_version=1.4.4
-  php_version=5.3.18
-  mysql_version=5.5.35
+else
+    httpd_version=2.4.10
+fi
+if echo $web |grep "nginx" > /dev/null;then
+  tmp=1
+  read -p "Please select the php version of 5.3.29/5.4.23/5.5.7, input 1 or 2 or 3 : " tmp
+  if [ "$tmp" == "1" ];then
+    php_version=5.3.29
+  elif [ "$tmp" == "2" ];then
+    php_version=5.4.23
+  elif [ "$tmp" == "3" ];then
+    php_version=5.5.7
+  fi
+else
+
+    tmp=1
+    read -p "Please select the php version of 5.3.29/5.4.23/5.5.7, input 1 or 2 or 3 : " tmp
+    if [ "$tmp" == "1" ];then
+      php_version=5.3.29
+    elif [ "$tmp" == "2" ];then
+      php_version=5.4.23
+    elif [ "$tmp" == "3" ];then
+      php_version=5.5.7
+    fi
+
+fi
+  mysql_version=5.5.40
 
 echo ""
 echo "You select the version :"
@@ -80,11 +114,7 @@ ifdebian=$(cat /proc/version | grep -i debian)
 
 
 ####---- install dependencies ----begin####
-if [ "$ifcentos" != "" ] || [ "$machine" == "i686" ];then
-rpm -e httpd-2.2.3-31.el5.centos gnome-user-share &> /dev/null
-fi
 
-\cp /etc/rc.local /etc/rc.local.bak
 if [ "$ifredhat" != "" ];then
 rpm -e --allmatches mysql MySQL-python perl-DBD-MySQL dovecot exim qt-MySQL perl-DBD-MySQL dovecot qt-MySQL mysql-server mysql-connector-odbc php-mysql mysql-bench libdbi-dbd-mysql mysql-devel-5.0.77-3.el5 httpd php mod_auth_mysql mailman squirrelmail php-pdo php-common php-mbstring php-cli &> /dev/null
 fi
@@ -97,10 +127,14 @@ if [ "$ifredhat" != "" ];then
   yum -y install gcc gcc-c++ gcc-g77 make libtool autoconf patch unzip automake fiex* libxml2 libxml2-devel ncurses ncurses-devel libtool-ltdl-devel libtool-ltdl libmcrypt libmcrypt-devel libpng libpng-devel libjpeg-devel openssl openssl-devel curl curl-devel libxml2 libxml2-devel ncurses ncurses-devel libtool-ltdl-devel libtool-ltdl autoconf automake libaio*
   iptables -F
 elif [ "$ifcentos" != "" ];then
+#	if grep 5.10 /etc/issue;then
+	  rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5 &> /dev/null
+#	fi
   sed -i 's/^exclude/#exclude/' /etc/yum.conf
   yum makecache
   yum -y remove mysql MySQL-python perl-DBD-MySQL dovecot exim qt-MySQL perl-DBD-MySQL dovecot qt-MySQL mysql-server mysql-connector-odbc php-mysql mysql-bench libdbi-dbd-mysql mysql-devel-5.0.77-3.el5 httpd php mod_auth_mysql mailman squirrelmail php-pdo php-common php-mbstring php-cli &> /dev/null
-  yum -y install gcc gcc-c++ gcc-g77 make libtool autoconf patch unzip automake libxml2 libxml2-devel ncurses ncurses-devel libtool-ltdl-devel libtool-ltdl libmcrypt libmcrypt-devel libpng libpng-devel libjpeg-devel openssl openssl-devel curl curl-devel libxml2 libxml2-devel ncurses ncurses-devel libtool-ltdl-devel libtool-ltdl autoconf automake libaio*
+  yum -y install gcc gcc-c++  make libtool autoconf patch unzip automake libxml2 libxml2-devel ncurses ncurses-devel libtool-ltdl-devel libtool-ltdl libmcrypt libmcrypt-devel libpng libpng-devel libjpeg-devel openssl openssl-devel curl curl-devel libxml2 libxml2-devel ncurses ncurses-devel libtool-ltdl-devel libtool-ltdl autoconf automake libaio*
+  yum -y update bash
   iptables -F
 elif [ "$ifubuntu" != "" ];then
   apt-get -y update
@@ -110,6 +144,7 @@ elif [ "$ifubuntu" != "" ];then
   \mv /etc/mysql /etc/mysql.bak &> /dev/null
   apt-get -y autoremove apache2 nginx php5 mysql-server &> /dev/null
   apt-get -y install unzip build-essential libncurses5-dev libfreetype6-dev libxml2-dev libssl-dev libcurl4-openssl-dev libjpeg62-dev libpng12-dev libfreetype6-dev libsasl2-dev libpcre3-dev autoconf libperl-dev libtool libaio*
+  apt-get -y install --only-upgrade bash
   iptables -F
 elif [ "$ifdebian" != "" ];then
   apt-get -y update
@@ -119,6 +154,7 @@ elif [ "$ifdebian" != "" ];then
   \mv /etc/mysql /etc/mysql.bak &> /dev/null
   apt-get -y autoremove apache2 nginx php5 mysql-server &> /dev/null
   apt-get -y install unzip psmisc build-essential libncurses5-dev libfreetype6-dev libxml2-dev libssl-dev libcurl4-openssl-dev libjpeg62-dev libpng12-dev libfreetype6-dev libsasl2-dev libpcre3-dev autoconf libperl-dev libtool libaio*
+  apt-get -y install --only-upgrade bash
   iptables -F
 fi
 ####---- install dependencies ----end####
@@ -165,9 +201,23 @@ echo "---------- vsftpd-$install_ftp_version  ok ----------" >> tmp.log
 
 ./res/install_soft.sh
 echo "---------- IBOS-$ibos_version ok ----------" >> tmp.log
-echo "---------- phpmyadmin-$phpmyadmin_version ok ----------" >> tmp.log
+
 echo "---------- web init ok ----------" >> tmp.log
 ####---- install software ----end####
+
+cat /etc/redhat-release |grep 7\..*|grep -i centos>/dev/null
+if [ ! $? -ne  0 ] ;then
+   systemctl stop firewalld.service 
+   systemctl disable firewalld.service
+   cp /etc/rc.local /etc/rc.local.bak > /dev/null
+   cp /etc/rc.d/rc.local /etc/rc.d/rc.local.bak > /dev/null
+   chmod u+x /etc/rc.local
+   chmod u+x /etc/rc.d/rc.local
+else 
+   cp /etc/rc.local /etc/rc.local.bak > /dev/null
+   cp /etc/rc.d/rc.local /etc/rc.d/rc.local.bak > /dev/null
+   echo "it is not centos7"
+fi
 
 
 ####---- Start command is written to the rc.local ----begin####
@@ -184,9 +234,16 @@ else
      echo "/etc/init.d/httpd start" >> /etc/rc.local
   fi
 fi
+cat /etc/redhat-release |grep 7\..*|grep -i centos>/dev/null
+if [ ! $? -ne  0 ] ;then
+   echo "systemctl start vsftpd.service" >> /etc/rc.local
+else 
 if ! cat /etc/rc.local | grep "/etc/init.d/vsftpd" > /dev/null;then 
     echo "/etc/init.d/vsftpd start" >> /etc/rc.local
+   fi
+   echo "it is not centos7"
 fi
+
 ####---- Start command is written to the rc.local ----end####
 
 
@@ -229,11 +286,17 @@ else
 /etc/init.d/httpd restart > /dev/null
 /etc/init.d/httpd start &> /dev/null
 fi
+
+cat /etc/redhat-release |grep 7\..*|grep -i centos>/dev/null
+if [ ! $? -ne  0 ] ;then
+   systemctl start vsftpd.service
+else 
 /etc/init.d/vsftpd restart
+fi
+
 ####---- restart ----end####
 
 ####---- log ----begin####
 \cp tmp.log $install_log
 cat $install_log
-cat account.log
 ####---- log ----end####

@@ -16,12 +16,5 @@ find ./ -type d | xargs chmod 755
 chmod -R 777 system/config/ static/ data/
 cd -
 
-#phpmyadmin
-if [ ! -f phpmyadmin.zip ];then
-  wget http://oss.aliyuncs.com/aliyunecs/onekey/phpMyAdmin-4.1.8-all-languages.zip
-fi
-rm -rf phpMyAdmin-4.1.8-all-languages
-unzip phpMyAdmin-4.1.8-all-languages.zip
-mv phpMyAdmin-4.1.8-all-languages /ibos/www/phpmyadmin
 
 chown -R www:www /ibos/www/
