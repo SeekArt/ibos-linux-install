@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #IBOS
-if [ ! -f ibos.zip ];then
+if [ ! -f master.zip ];then
   wget https://github.com/SeekArt/IBOS/archive/master.zip
 fi
 rm -rf IBOS-master

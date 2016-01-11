@@ -5,9 +5,9 @@ if [ ! -f php-5.4..tar.gz ];then
 fi
 tar zxvf php-5.4..tar.gz
 cd php-5.4.
-./configure --prefix=/alidata/server/php \
---with-config-file-path=/alidata/server/php/etc \
---with-apxs2=/alidata/server/httpd/bin/apxs \
+./configure --prefix=/ibos/server/php \
+--with-config-file-path=/ibos/server/php/etc \
+--with-apxs2=/ibos/server/httpd/bin/apxs \
 --with-mysql=mysqlnd \
 --with-mysqli=mysqlnd \
 --with-pdo-mysql=mysqlnd \
@@ -48,14 +48,14 @@ else
 fi
 make install
 cd ..
-cp ./php-5.4./php.ini-production /alidata/server/php/etc/php.ini
+cp ./php-5.4./php.ini-production /ibos/server/php/etc/php.ini
 #adjust php.ini
-sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/alidata/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /alidata/server/php/etc/php.ini
-sed -i 's#extension_dir = \"\.\/\"#extension_dir = "/alidata/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /alidata/server/php/etc/php.ini
-sed -i 's/post_max_size = 8M/post_max_size = 64M/g' /alidata/server/php/etc/php.ini
-sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 64M/g' /alidata/server/php/etc/php.ini
-sed -i 's/;date.timezone =/date.timezone = PRC/g' /alidata/server/php/etc/php.ini
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=1/g' /alidata/server/php/etc/php.ini
-sed -i 's/max_execution_time = 30/max_execution_time = 300/g' /alidata/server/php/etc/php.ini
+sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini
+sed -i 's#extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini
+sed -i 's/post_max_size = 8M/post_max_size = 64M/g' /ibos/server/php/etc/php.ini
+sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 64M/g' /ibos/server/php/etc/php.ini
+sed -i 's/;date.timezone =/date.timezone = PRC/g' /ibos/server/php/etc/php.ini
+sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=1/g' /ibos/server/php/etc/php.ini
+sed -i 's/max_execution_time = 30/max_execution_time = 300/g' /ibos/server/php/etc/php.ini
 /etc/init.d/httpd restart
 sleep 5

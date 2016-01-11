@@ -55,7 +55,7 @@ version 1.2.0(lamp/lnmp)(2014-02-25更新):
 1、加入版本控制功能，区分安装包的版本。在change.log有版本更新说明。
 2、将phpMyAdmin版本从3.5.2.2升级到4.1.8。
 3、代码优化，加入简单注释，去除冗余代码，修复判断错误问题等等。
-4、增加安装日志/alidata/website-info.log，日志中显示安装的软件版本情况。
+4、增加安装日志/ibos/website-info.log，日志中显示安装的软件版本情况。
 5、去除echo "/etc/init.d/iptables stop" >> /etc/rc.local 改为 iptabls -F。
 6、增加两个内核参数：
     net.ipv4.tcp_syncookies = 1

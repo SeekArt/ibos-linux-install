@@ -5,8 +5,8 @@ if [ ! -f php-5.4..tar.gz ];then
 fi
 tar zxvf php-5.4..tar.gz
 cd php-5.4.
-./configure --prefix=/alidata/server/php \
---with-config-file-path=/alidata/server/php/etc \
+./configure --prefix=/ibos/server/php \
+--with-config-file-path=/ibos/server/php/etc \
 --with-mysql=mysqlnd \
 --with-mysqli=mysqlnd \
 --with-pdo-mysql=mysqlnd \
@@ -47,26 +47,26 @@ else
 fi
 make install
 cd ..
-cp ./php-5.4./php.ini-production /alidata/server/php/etc/php.ini
+cp ./php-5.4./php.ini-production /ibos/server/php/etc/php.ini
 #adjust php.ini
-sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/alidata/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /alidata/server/php/etc/php.ini
-sed -i 's#extension_dir = \"\.\/\"#extension_dir = "/alidata/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /alidata/server/php/etc/php.ini
-sed -i 's/post_max_size = 8M/post_max_size = 64M/g' /alidata/server/php/etc/php.ini
-sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 64M/g' /alidata/server/php/etc/php.ini
-sed -i 's/;date.timezone =/date.timezone = PRC/g' /alidata/server/php/etc/php.ini
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=1/g' /alidata/server/php/etc/php.ini
-sed -i 's/max_execution_time = 30/max_execution_time = 300/g' /alidata/server/php/etc/php.ini
+sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini
+sed -i 's#extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini
+sed -i 's/post_max_size = 8M/post_max_size = 64M/g' /ibos/server/php/etc/php.ini
+sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 64M/g' /ibos/server/php/etc/php.ini
+sed -i 's/;date.timezone =/date.timezone = PRC/g' /ibos/server/php/etc/php.ini
+sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=1/g' /ibos/server/php/etc/php.ini
+sed -i 's/max_execution_time = 30/max_execution_time = 300/g' /ibos/server/php/etc/php.ini
 #adjust php-fpm
-cp /alidata/server/php/etc/php-fpm.conf.default /alidata/server/php/etc/php-fpm.conf
-sed -i 's,user = nobody,user=www,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,group = nobody,group=www,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,^pm.min_spare_servers = 1,pm.min_spare_servers = 5,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,^pm.max_spare_servers = 3,pm.max_spare_servers = 35,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,^pm.max_children = 5,pm.max_children = 100,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,^pm.start_servers = 2,pm.start_servers = 20,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,;pid = run/php-fpm.pid,pid = run/php-fpm.pid,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,;error_log = log/php-fpm.log,error_log = /alidata/log/php/php-fpm.log,g'   /alidata/server/php/etc/php-fpm.conf
-sed -i 's,;slowlog = log/$pool.log.slow,slowlog = /alidata/log/php/\$pool.log.slow,g'   /alidata/server/php/etc/php-fpm.conf
+cp /ibos/server/php/etc/php-fpm.conf.default /ibos/server/php/etc/php-fpm.conf
+sed -i 's,user = nobody,user=www,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,group = nobody,group=www,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,^pm.min_spare_servers = 1,pm.min_spare_servers = 5,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,^pm.max_spare_servers = 3,pm.max_spare_servers = 35,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,^pm.max_children = 5,pm.max_children = 100,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,^pm.start_servers = 2,pm.start_servers = 20,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,;pid = run/php-fpm.pid,pid = run/php-fpm.pid,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,;error_log = log/php-fpm.log,error_log = /ibos/log/php/php-fpm.log,g'   /ibos/server/php/etc/php-fpm.conf
+sed -i 's,;slowlog = log/$pool.log.slow,slowlog = /ibos/log/php/\$pool.log.slow,g'   /ibos/server/php/etc/php-fpm.conf
 #self start
 install -v -m755 ./php-5.4./sapi/fpm/init.d.php-fpm  /etc/init.d/php-fpm
 /etc/init.d/php-fpm start
