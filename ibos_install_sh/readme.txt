@@ -6,12 +6,12 @@
 
 此安装包包含的软件及版本为：
 nginx：1.4.4
+apache：2.4.2
 mysql：5.5.35
-php：5.3.18
+php：5.3.18、5.4.23、5.5.7
 php扩展：memcache、Zend Engine/OPcache
 ftp：（yum/apt-get安装）
 IBOS：3.3 
-phpmyadmin：3.2.2.2
 
 安装步骤：
 

@@ -1,10 +1,10 @@
 #!/bin/bash
-rm -rf php-5.4.
-if [ ! -f php-5.4..tar.gz ];then
-  wget http://oss.aliyuncs.com/aliyunecs/onekey/php/php-5.4..tar.gz
+rm -rf php-5.4.23
+if [ ! -f php-5.4.23.tar.gz ];then
+  wget http://oss.aliyuncs.com/aliyunecs/onekey/php/php-5.4.23.tar.gz
 fi
-tar zxvf php-5.4..tar.gz
-cd php-5.4.
+tar zxvf php-5.4.23.tar.gz
+cd php-5.4.23
 ./configure --prefix=/ibos/server/php \
 --with-config-file-path=/ibos/server/php/etc \
 --with-apxs2=/ibos/server/httpd/bin/apxs \
@@ -48,7 +48,7 @@ else
 fi
 make install
 cd ..
-cp ./php-5.4./php.ini-production /ibos/server/php/etc/php.ini
+cp ./php-5.4.23/php.ini-production /ibos/server/php/etc/php.ini
 #adjust php.ini
 sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini
 sed -i 's#extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini

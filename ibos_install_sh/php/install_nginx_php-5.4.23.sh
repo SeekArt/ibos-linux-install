@@ -1,10 +1,10 @@
 #!/bin/bash
-rm -rf php-5.4.
-if [ ! -f php-5.4..tar.gz ];then
-  wget  http://oss.aliyuncs.com/aliyunecs/onekey/php/php-5.4..tar.gz
+rm -rf php-5.4.23
+if [ ! -f php-5.4.23.tar.gz ];then
+  wget  http://oss.aliyuncs.com/aliyunecs/onekey/php/php-5.4.23.tar.gz
 fi
-tar zxvf php-5.4..tar.gz
-cd php-5.4.
+tar zxvf php-5.4.23.tar.gz
+cd php-5.4.23
 ./configure --prefix=/ibos/server/php \
 --with-config-file-path=/ibos/server/php/etc \
 --with-mysql=mysqlnd \
@@ -47,7 +47,7 @@ else
 fi
 make install
 cd ..
-cp ./php-5.4./php.ini-production /ibos/server/php/etc/php.ini
+cp ./php-5.4.23/php.ini-production /ibos/server/php/etc/php.ini
 #adjust php.ini
 sed -i 's#; extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini
 sed -i 's#extension_dir = \"\.\/\"#extension_dir = "/ibos/server/php/lib/php/extensions/no-debug-non-zts-20100525/"#'  /ibos/server/php/etc/php.ini
@@ -68,6 +68,6 @@ sed -i 's,;pid = run/php-fpm.pid,pid = run/php-fpm.pid,g'   /ibos/server/php/etc
 sed -i 's,;error_log = log/php-fpm.log,error_log = /ibos/log/php/php-fpm.log,g'   /ibos/server/php/etc/php-fpm.conf
 sed -i 's,;slowlog = log/$pool.log.slow,slowlog = /ibos/log/php/\$pool.log.slow,g'   /ibos/server/php/etc/php-fpm.conf
 #self start
-install -v -m755 ./php-5.4./sapi/fpm/init.d.php-fpm  /etc/init.d/php-fpm
+install -v -m755 ./php-5.4.23/sapi/fpm/init.d.php-fpm  /etc/init.d/php-fpm
 /etc/init.d/php-fpm start
 sleep 5

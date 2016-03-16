@@ -3,6 +3,7 @@ rm -rf nginx-1.4.4
 if [ ! -f nginx-1.4.4.tar.gz ];then
   wget http://oss.aliyuncs.com/aliyunecs/onekey/nginx/nginx-1.4.4.tar.gz
 fi
+
 tar zxvf nginx-1.4.4.tar.gz
 cd nginx-1.4.4
 ./configure --user=www \

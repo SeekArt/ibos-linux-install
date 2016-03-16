@@ -65,7 +65,7 @@ echo "Include /ibos/server/httpd/conf/vhosts/*.conf" > /ibos/server/httpd/conf/e
 
 
 mkdir -p /ibos/server/httpd/conf/vhosts/
-cat > /ibos/server/httpd/conf/vhosts.conf << END
+cat > /ibos/server/httpd/conf/vhosts/ibos.conf << END
 <DirectoryMatch "/ibos/www/(attachment|html|data)">
 <Files ~ ".php">
 Order allow,deny
@@ -88,8 +88,8 @@ Deny from all
 		RewriteRule ^(.*)-htm-(.*)$ $1.php?$2
 		RewriteRule ^(.*)/simple/([a-z0-9\_]+\.html)$ $1/simple/index.php?$2
 	</IfModule>
-	ErrorLog "/ibos/log/httpd-error.log"
-	CustomLog "/ibos/log/httpd.log" common
+	ErrorLog "/ibos/log/httpd/ibos-error.log"
+	CustomLog "/ibos/log/httpd/ibos.log" common
 </VirtualHost>
 END
 
